@@ -76,21 +76,21 @@
   <section id="turnuvalar"><div class="wrap">
     <div class="section-head"><div><div class="kicker">02 / Turnuvalar</div><h2>Takipte kal.</h2></div><p class="section-desc">Yeni turnuvalar ve katılım duyuruları burada paylaşılacak.</p></div>
     <div class="card" style="min-height:0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
-      <div><span class="tag">ÇOK YAKINDA</span><h3 style="margin:14px 0 5px">İlk EA SPORTS FC 27 turnuvası</h3><p>Turnuva tarihi, katılım koşulları ve ödül bilgileri yakında açıklanacak.</p></div>
+      <div><span class="tag">ÇOK YAKINDA</span><h3 style="margin:14px 0 5px">İlk EA SPORTS FC 27 turnuvası</h3><p>İlk turnuvamız ücretsiz! Cross-play destekli yeni nesil platformlarda Ultimate Team rekabetine katıl. Tarih ve kontenjan yakında açıklanacak.</p></div>
       <a class="btn secondary" href="#kayit">İlgi bildir ↗</a>
     </div>
   </div></section>
 
   <section id="kayit"><div class="wrap register">
-    <div class="register-copy"><div class="kicker">03 / Katılım</div><h2>Yerini ayırt.</h2><p>Turnuvaya katılmak için bilgilerini bırak. Organizasyon detayları netleştiğinde seninle iletişime geçelim.</p><p class="small">Başvuru göndermek henüz canlı bir kayıt sistemine bağlı değil. Yayına almadan önce formu e-posta veya kayıt altyapısına bağlamamız gerekiyor.</p></div>
+    <div class="register-copy"><div class="kicker">03 / Katılım</div><h2>Yerini ayırt.</h2><p>Turnuvaya katılmak için bilgilerini bırak. Organizasyon detayları netleştiğinde seninle iletişime geçelim.</p><p class="small">İlk turnuva ücretsizdir. Başvurular incelendikten sonra Instagram üzerinden iletişime geçilecektir. Ödül bulunmamaktadır.</p></div>
     <form id="entryForm">
       <div class="field"><label for="name">Ad soyad *</label><input id="name" name="name" autocomplete="name" required placeholder="Adın ve soyadın"></div>
-      <div class="field"><label for="handle">Oyuncu ID / PSN ID *</label><input id="handle" name="handle" required placeholder="Oyun içi kullanıcı adın"></div>
-      <div class="field"><label for="platform">Platform *</label><select id="platform" name="platform" required><option value="">Seç</option><option>PlayStation 5</option><option>PlayStation 4</option><option>Xbox</option><option>PC</option></select></div>
-      <div class="field"><label for="contact">İletişim (Instagram / e-posta) *</label><input id="contact" name="contact" required placeholder="@kullanici veya e-posta"></div>
-      <div class="field full"><label for="message">Eklemek istediğin bir şey (isteğe bağlı)</label><textarea id="message" name="message" placeholder="Soruların veya notun..."></textarea></div>
-      <button class="btn form-submit" type="submit">Başvuru Önizlemesi Oluştur ↗</button>
-      <p class="form-hint">* Zorunlu alanlar. Bu önizleme formu şu an bilgileri hiçbir yere göndermez.</p>
+      <div class="field"><label for="handle">EA ID *</label><input id="handle" name="handle" required placeholder="EA hesabındaki kullanıcı adın"></div>
+      <div class="field"><label for="platform">Platform *</label><select id="platform" name="platform" required><option value="">Seç</option><option value="PS5">PlayStation 5</option><option value="Xbox Series X/S">Xbox Series X/S</option><option value="PC">PC</option></select></div>
+      <div class="field"><label for="contact">Instagram kullanıcı adın *</label><input id="contact" name="contact" required placeholder="@kullanici"></div>
+      <div class="field full"><label for="discord">Discord kullanıcı adın (isteğe bağlı)</label><input id="discord" name="discord" placeholder="Discord kullanıcı adın"></div>
+      <button class="btn form-submit" type="submit">Ücretsiz Başvuru Gönder ↗</button>
+      <p class="form-hint">* Zorunlu alanlar. Başvurun değerlendirilmek üzere kaydedilir. Kayıt, turnuvaya kesin kabul anlamına gelmez.</p>
       <div class="notice" id="notice" role="status"></div>
     </form>
   </div></section>
@@ -102,26 +102,55 @@
 </main>
 <footer><div class="wrap foot"><span>© 2026 ObiTournaments. Tüm hakları saklıdır.</span><span>EA SPORTS FC 27 Community • Türkiye</span></div></footer>
 <script>
-  const form=document.getElementById('entryForm');
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    if(!form.reportValidity()) return;
-    const data=new FormData(form);
-    const summary=[
-      'Başvuru önizlemesi — ObiTournaments',
-      'Ad soyad: '+data.get('name'),
-      'Oyuncu ID: '+data.get('handle'),
-      'Platform: '+data.get('platform'),
-      'İletişim: '+data.get('contact'),
-      'Not: '+(data.get('message')||'-')
-    ].join('\n');
-    const notice=document.getElementById('notice');
-    notice.style.display='block';
-    notice.textContent='Bilgilerin kontrol edildi. Bu demo sürümünde başvurun gönderilmedi ve kaydedilmedi. Canlı kayıt için formu bir kayıt servisine bağlamamız gerekiyor.';
-    const blob=new Blob([summary],{type:'text/plain;charset=utf-8'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');a.href=url;a.download='obitournaments-basvuru-onizleme.txt';a.click();
-    URL.revokeObjectURL(url);
+  // Supabase > Settings > API Keys > Publishable key değerini buraya ekle.
+  const SUPABASE_URL = 'https://eizmdhhhwucbjnhouymq.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'BURAYA_PUBLISHABLE_KEY_YAZ';
+  const form = document.getElementById('entryForm');
+  const notice = document.getElementById('notice');
+  const submitButton = form.querySelector('button[type="submit"]');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    notice.style.display = 'block';
+    if (SUPABASE_PUBLISHABLE_KEY === 'BURAYA_PUBLISHABLE_KEY_YAZ') {
+      notice.textContent = 'Site yöneticisi kayıt bağlantısını henüz tamamlamadı.';
+      return;
+    }
+    const data = new FormData(form);
+    const instagram = String(data.get('contact') || '').trim();
+    const payload = {
+      player_name: String(data.get('name') || '').trim(),
+      ea_id: String(data.get('handle') || '').trim(),
+      platform: String(data.get('platform') || ''),
+      instagram,
+      discord: String(data.get('discord') || '').trim() || null,
+      tournament: 'OBI CUP #001',
+      status: 'pending'
+    };
+    submitButton.disabled = true;
+    submitButton.textContent = 'Gönderiliyor...';
+    notice.textContent = 'Başvurun gönderiliyor...';
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/players`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_PUBLISHABLE_KEY,
+          'Authorization': `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error(`Kayıt hatası: ${response.status}`);
+      notice.textContent = 'Başvurun alındı! Turnuva duyuruları için @obitournaments hesabını takip et.';
+      form.reset();
+    } catch (error) {
+      notice.textContent = 'Başvuru gönderilemedi. Lütfen daha sonra tekrar dene.';
+      console.error('ObiTournaments kayıt hatası:', error);
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Ücretsiz Başvuru Gönder ↗';
+    }
   });
 </script>
 </body>
