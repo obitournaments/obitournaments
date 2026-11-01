@@ -136,16 +136,15 @@
         headers: {
           'Content-Type': 'application/json',
           'apikey': SUPABASE_PUBLISHABLE_KEY,
-          'Authorization': `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
           'Prefer': 'return=minimal'
         },
         body: JSON.stringify(payload)
       });
-      if (!response.ok) throw new Error(`Kayıt hatası: ${response.status}`);
+      if (!response.ok) { const detail = await response.text(); throw new Error(`Kayıt hatası: ${response.status} ${detail}`); }
       notice.textContent = 'Başvurun alındı! Turnuva duyuruları için @obitournaments hesabını takip et.';
       form.reset();
     } catch (error) {
-      notice.textContent = 'Başvuru gönderilemedi. Lütfen daha sonra tekrar dene.';
+      notice.textContent = 'Başvuru gönderilemedi. Hata: ' + error.message;
       console.error('ObiTournaments kayıt hatası:', error);
     } finally {
       submitButton.disabled = false;
