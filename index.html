@@ -112,10 +112,6 @@
     event.preventDefault();
     if (!form.reportValidity()) return;
     notice.style.display = 'block';
-    if (SUPABASE_PUBLISHABLE_KEY === 'sb_publishable_fVCqF6TXN0ymvAlsFIIgfw_RzuJaYq_') {
-      notice.textContent = 'Site yöneticisi kayıt bağlantısını henüz tamamlamadı.';
-      return;
-    }
     const data = new FormData(form);
     const instagram = String(data.get('contact') || '').trim();
     const payload = {
