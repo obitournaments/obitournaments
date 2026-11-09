@@ -110,7 +110,6 @@ $('loginForm').addEventListener('submit',async e=>{
 });
 $('refresh').addEventListener('click',loadPlayers);
 $('playerTournamentFilter').addEventListener('change',loadPlayers);
-$('logout').addEventListener('click',async()=>{
 $('logout').addEventListener('click',async()=>{try{if(accessToken)await api('/auth/v1/logout',{method:'POST'})}catch{}clearSession();notice('Çıkış yapıldı.')});
 (async()=>{try{const stored=JSON.parse(sessionStorage.getItem('obi_admin_session')||'null');if(!stored?.refreshToken)return;const result=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:stored.refreshToken},token:null});accessToken=result.access_token;refreshToken=result.refresh_token;sessionStorage.setItem('obi_admin_session',JSON.stringify({accessToken,refreshToken}));showLoggedIn(true);await Promise.all([loadPlayers(),loadTournaments()])}catch{clearSession()}})();
 </script></body></html>
