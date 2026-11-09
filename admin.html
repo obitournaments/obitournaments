@@ -35,11 +35,30 @@ function clearSession(){accessToken=null;refreshToken=null;sessionStorage.remove
 async function loadPlayers(){
  $('refresh').disabled=true;notice('Başvurular yükleniyor...');
  try{
-  const players=await api('/rest/v1/players?select=*&order=created_at.desc&limit=500');
-  $('summary').textContent=players.length+' kayıt (en fazla 500 gösteriliyor)';
+  const filter = $('playerTournamentFilter');
+const previousSelection = filter.value;
+
+const tournamentNames = [...new Set(
+  players.map(p => p.tournament).filter(Boolean)
+)];
+
+filter.replaceChildren(new Option('Tüm Turnuvalar', ''));
+
+for (const name of tournamentNames) {
+  filter.add(new Option(name, name));
+}
+
+filter.value = previousSelection;
+
+const selectedTournament = filter.value;
+
+const filteredPlayers = selectedTournament
+  ? players.filter(p => p.tournament === selectedTournament)
+  : players;
+  $('summary').textContent=filteredPlayers.length+' kayıt gösteriliyor';
   $('rows').replaceChildren();
-  if(!players.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=8;td.textContent='Başvuru bulunamadı veya bu hesaba erişim yetkisi verilmedi.';tr.append(td);$('rows').append(tr)}
-  for(const player of players){
+  if(!filteredPlayers.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=8;td.textContent='Başvuru bulunamadı veya bu hesaba erişim yetkisi verilmedi.';tr.append(td);$('rows').append(tr)}
+  for(const player of filteredPlayers){
    const tr=document.createElement('tr');
    for(const key of ['player_name','ea_id','platform','instagram','discord','tournament']){const td=document.createElement('td');td.textContent=player[key]??'—';tr.append(td)}
    const status=document.createElement('td'),pill=document.createElement('span');pill.className='status';pill.textContent=player.status||'pending';status.append(pill);tr.append(status);
