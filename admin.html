@@ -33,9 +33,10 @@ async function api(path,{method='GET',body,token=accessToken}={}){
 function showLoggedIn(yes){$('loginPanel').classList.toggle('hidden',yes);$('dashboard').classList.toggle('hidden',!yes);$('logout').classList.toggle('hidden',!yes)}
 function clearSession(){accessToken=null;refreshToken=null;sessionStorage.removeItem('obi_admin_session');showLoggedIn(false);$('rows').replaceChildren();$('tournamentRows').replaceChildren();resetTournamentForm()}
 async function loadPlayers(){
- $('refresh').disabled=true;notice('Başvurular yükleniyor...');
- try{
-  const filter = $('playerTournamentFilter');
+$('refresh').disabled=true;notice('Başvurular yükleniyor...');
+try{
+const players=await api('/rest/v1/players?select=*&order=created_at.desc&limit=500');
+const filter = $('playerTournamentFilter');
 const previousSelection = filter.value;
 
 const tournamentNames = [...new Set(
