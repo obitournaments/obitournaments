@@ -1,9 +1,13 @@
 <!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>ObiTournaments | Yönetici</title>
-<style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#080808;color:#f5f5f5;font:15px system-ui,Arial,sans-serif}main{max-width:1050px;margin:50px auto;padding:0 20px}h1{font-size:30px;letter-spacing:-1px}h2{font-size:20px}p,.muted{color:#aaa}.panel{background:#151515;border:1px solid #303030;border-radius:14px;padding:24px;margin-top:22px}input,button{font:inherit;border-radius:8px;padding:12px}input{display:block;width:100%;background:#090909;color:#fff;border:1px solid #444;margin:10px 0 15px}button{background:#f5f5f5;color:#111;border:0;font-weight:650;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.secondary{background:#292929;color:#eee}.actions{display:flex;gap:8px;flex-wrap:wrap}.top{display:flex;align-items:center;justify-content:space-between;gap:16px}.hidden{display:none!important}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:850px}th,td{padding:13px 10px;text-align:left;border-bottom:1px solid #303030;vertical-align:middle}th{color:#aaa;font-size:12px}td{font-size:13px}.status{display:inline-block;border:1px solid #555;padding:5px 9px;border-radius:20px}.notice{min-height:22px;margin-top:12px}.danger{color:#ff9a9a}.ok{color:#a6e3b4}small{color:#999}a{color:#ddd}</style></head>
+<style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#080808;color:#f5f5f5;font:15px system-ui,Arial,sans-serif}main{max-width:1050px;margin:50px auto;padding:0 20px}h1{font-size:30px;letter-spacing:-1px}h2{font-size:20px}p,.muted{color:#aaa}.panel{background:#151515;border:1px solid #303030;border-radius:14px;padding:24px;margin-top:22px}input,select,textarea,button{font:inherit;border-radius:8px;padding:12px}input,select,textarea{display:block;width:100%;background:#090909;color:#fff;border:1px solid #444;margin:10px 0 15px}button{background:#f5f5f5;color:#111;border:0;font-weight:650;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.secondary{background:#292929;color:#eee}.actions{display:flex;gap:8px;flex-wrap:wrap}.top{display:flex;align-items:center;justify-content:space-between;gap:16px}.hidden{display:none!important}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:850px}th,td{padding:13px 10px;text-align:left;border-bottom:1px solid #303030;vertical-align:middle}th{color:#aaa;font-size:12px}td{font-size:13px}.status{display:inline-block;border:1px solid #555;padding:5px 9px;border-radius:20px}.notice{min-height:22px;margin-top:12px}.danger{color:#ff9a9a}.ok{color:#a6e3b4}small{color:#999}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}.wide{grid-column:1/-1}.tournament-actions{display:flex;gap:8px;flex-wrap:wrap}.tournament-actions button{padding:8px 10px;font-size:12px}@media(max-width:650px){.formgrid{grid-template-columns:1fr}main{margin:24px auto}.panel{padding:16px}}a{color:#ddd}</style></head>
 <body><main><div class="top"><div><small>OBITOURNAMENTS / MANAGEMENT</small><h1>Yönetici Paneli</h1></div><button id="logout" class="secondary hidden">Çıkış yap</button></div>
 <section id="loginPanel" class="panel"><h2>Yönetici girişi</h2><p>Yalnızca yetkili hesaplar başvuruları görüntüleyebilir.</p><form id="loginForm"><label>E-posta<input id="email" type="email" autocomplete="username" required></label><label>Şifre<input id="password" type="password" autocomplete="current-password" required></label><button id="loginButton" type="submit">Giriş yap</button></form></section>
-<section id="dashboard" class="hidden"><div class="panel"><div class="top"><div><h2>Oyuncu başvuruları</h2><p id="summary">Yükleniyor...</p></div><button id="refresh" class="secondary">Yenile</button></div><div class="tablewrap"><table><thead><tr><th>Oyuncu</th><th>EA ID</th><th>Platform</th><th>Instagram</th><th>Discord</th><th>Turnuva</th><th>Durum</th><th>İşlemler</th></tr></thead><tbody id="rows"></tbody></table></div></div></section><p id="notice" class="notice" role="status" aria-live="polite"></p></main>
+<section id="dashboard" class="hidden"><div class="panel"><div class="top"><div><h2>Oyuncu başvuruları</h2><p id="summary">Yükleniyor...</p></div><button id="refresh" class="secondary">Yenile</button></div><div class="tablewrap"><table><thead><tr><th>Oyuncu</th><th>EA ID</th><th>Platform</th><th>Instagram</th><th>Discord</th><th>Turnuva</th><th>Durum</th><th>İşlemler</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+<div class="panel"><div class="top"><div><h2>Turnuvalar</h2><p>Birden fazla turnuvayı aynı anda yönet.</p></div><button id="refreshTournaments" class="secondary">Yenile</button></div>
+<div class="tablewrap"><table><thead><tr><th>Turnuva</th><th>Tarih</th><th>Kontenjan</th><th>Ödül</th><th>Durum</th><th>İşlemler</th></tr></thead><tbody id="tournamentRows"></tbody></table></div></div>
+<div class="panel"><h2 id="tournamentFormTitle">Yeni turnuva oluştur</h2><form id="tournamentForm"><div class="formgrid"><label>Turnuva adı<input id="tournamentName" maxlength="120" required placeholder="OBI CUP #002"></label><label>Katılımcı sınırı<input id="tournamentMax" type="number" min="2" max="1024" value="32" required></label><label>Başlangıç tarihi<input id="tournamentDate" type="datetime-local"></label><label>Ödül<input id="tournamentPrize" maxlength="300" placeholder="Ödül bilgisi"></label><label class="wide">Durum<select id="tournamentStatus"><option value="draft">Taslak</option><option value="registration_open">Kayıt açık</option><option value="registration_closed">Kayıt kapalı</option><option value="ongoing">Devam ediyor</option><option value="completed">Tamamlandı</option><option value="cancelled">İptal edildi</option></select></label><label class="wide">Açıklama<textarea id="tournamentDescription" rows="3" maxlength="1500" placeholder="Turnuva detayları"></textarea></label></div><div class="actions"><button id="saveTournament" type="submit">Turnuvayı kaydet</button><button id="cancelEdit" type="button" class="secondary hidden">Düzenlemeyi iptal et</button></div></form></div>
+</section><p id="notice" class="notice" role="status" aria-live="polite"></p></main>
 <script>
 'use strict';
 const SUPABASE_URL='https://eizmdhhhwucbjnhouymq.supabase.co';
@@ -12,6 +16,8 @@ const SUPABASE_PUBLISHABLE_KEY='sb_publishable_fVCqF6TXN0ymvAlsFIIgfw_RzuJaYq_';
 const $=id=>document.getElementById(id);
 let accessToken=null;
 let refreshToken=null;
+let editingTournamentId=null;
+let tournamentsCache=[];
 const notice=(message,error=false)=>{$('notice').textContent=message;$('notice').className='notice '+(error?'danger':'ok')};
 async function api(path,{method='GET',body,token=accessToken}={}){
  const headers={'apikey':SUPABASE_PUBLISHABLE_KEY};
@@ -23,7 +29,7 @@ async function api(path,{method='GET',body,token=accessToken}={}){
  return data;
 }
 function showLoggedIn(yes){$('loginPanel').classList.toggle('hidden',yes);$('dashboard').classList.toggle('hidden',!yes);$('logout').classList.toggle('hidden',!yes)}
-function clearSession(){accessToken=null;refreshToken=null;sessionStorage.removeItem('obi_admin_session');showLoggedIn(false);$('rows').replaceChildren()}
+function clearSession(){accessToken=null;refreshToken=null;sessionStorage.removeItem('obi_admin_session');showLoggedIn(false);$('rows').replaceChildren();$('tournamentRows').replaceChildren();resetTournamentForm()}
 async function loadPlayers(){
  $('refresh').disabled=true;notice('Başvurular yükleniyor...');
  try{
@@ -45,6 +51,32 @@ async function loadPlayers(){
   notice('Başvurular güncellendi.');
  }catch(e){notice(e.message,true);if(/401|JWT|token/i.test(e.message))clearSession()}finally{$('refresh').disabled=false}
 }
+
+const statusLabels={draft:'Taslak',registration_open:'Kayıt açık',registration_closed:'Kayıt kapalı',ongoing:'Devam ediyor',completed:'Tamamlandı',cancelled:'İptal edildi'};
+function resetTournamentForm(){editingTournamentId=null;$('tournamentForm').reset();$('tournamentMax').value='32';$('tournamentFormTitle').textContent='Yeni turnuva oluştur';$('saveTournament').textContent='Turnuvayı kaydet';$('cancelEdit').classList.add('hidden')}
+function setTournamentEdit(t){editingTournamentId=t.id;$('tournamentName').value=t.name||'';$('tournamentMax').value=t.max_players;$('tournamentPrize').value=t.prize||'';$('tournamentDescription').value=t.description||'';$('tournamentStatus').value=t.status;$('tournamentDate').value=t.start_date?new Date(new Date(t.start_date).getTime()-new Date(t.start_date).getTimezoneOffset()*60000).toISOString().slice(0,16):'';$('tournamentFormTitle').textContent='Turnuvayı düzenle';$('saveTournament').textContent='Değişiklikleri kaydet';$('cancelEdit').classList.remove('hidden');$('tournamentForm').scrollIntoView({behavior:'smooth',block:'center'})}
+async function loadTournaments(){
+ $('refreshTournaments').disabled=true;
+ try{
+  tournamentsCache=await api('/rest/v1/tournaments?select=*&order=created_at.desc&limit=500');
+  $('tournamentRows').replaceChildren();
+  if(!tournamentsCache.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent='Henüz turnuva oluşturulmadı.';tr.append(td);$('tournamentRows').append(tr)}
+  for(const t of tournamentsCache){const tr=document.createElement('tr');const values=[t.name,t.start_date?new Date(t.start_date).toLocaleString('tr-TR'):'—',t.max_players,t.prize||'—',statusLabels[t.status]||t.status];for(const v of values){const td=document.createElement('td');td.textContent=v;tr.append(td)}const td=document.createElement('td'),actions=document.createElement('div');actions.className='tournament-actions';const edit=document.createElement('button');edit.className='secondary';edit.textContent='Düzenle';edit.addEventListener('click',()=>setTournamentEdit(t));const del=document.createElement('button');del.className='secondary';del.textContent='Sil';del.addEventListener('click',async()=>{if(!confirm('"'+t.name+'" turnuvasını kalıcı olarak silmek istiyor musun?'))return;del.disabled=true;try{await api('/rest/v1/tournaments?id=eq.'+encodeURIComponent(t.id),{method:'DELETE'});if(editingTournamentId===t.id)resetTournamentForm();await loadTournaments();notice('Turnuva silindi.')}catch(e){notice(e.message,true)}finally{del.disabled=false}});actions.append(edit,del);td.append(actions);tr.append(td);$('tournamentRows').append(tr)}
+ }catch(e){notice('Turnuvalar yüklenemedi: '+e.message,true)}finally{$('refreshTournaments').disabled=false}
+}
+$('tournamentForm').addEventListener('submit',async e=>{
+ e.preventDefault();const btn=$('saveTournament');btn.disabled=true;
+ try{
+  const date=$('tournamentDate').value;
+  const body={name:$('tournamentName').value.trim(),max_players:Number($('tournamentMax').value),start_date:date?new Date(date).toISOString():null,prize:$('tournamentPrize').value.trim()||null,description:$('tournamentDescription').value.trim()||null,status:$('tournamentStatus').value};
+  if(!body.name||!Number.isInteger(body.max_players)||body.max_players<2||body.max_players>1024)throw Error('Turnuva adı ve kontenjanı kontrol et.');
+  if(editingTournamentId!==null){await api('/rest/v1/tournaments?id=eq.'+encodeURIComponent(editingTournamentId),{method:'PATCH',body})}else{await api('/rest/v1/tournaments',{method:'POST',body})}
+  resetTournamentForm();await loadTournaments();notice('Turnuva kaydedildi.');
+ }catch(err){notice('Turnuva kaydedilemedi: '+err.message,true)}finally{btn.disabled=false}
+});
+$('cancelEdit').addEventListener('click',resetTournamentForm);
+$('refreshTournaments').addEventListener('click',loadTournaments);
+
 $('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();$('loginButton').disabled=true;notice('Giriş yapılıyor...');
  try{
@@ -52,10 +84,10 @@ $('loginForm').addEventListener('submit',async e=>{
   accessToken=result.access_token;refreshToken=result.refresh_token;
   // Yönetici kontrolü veritabanındaki RLS politikaları tarafından yapılır.
   sessionStorage.setItem('obi_admin_session',JSON.stringify({accessToken,refreshToken}));
-  $('password').value='';showLoggedIn(true);await loadPlayers();
+  $('password').value='';showLoggedIn(true);await Promise.all([loadPlayers(),loadTournaments()]);
  }catch(err){clearSession();notice('Giriş başarısız: '+err.message,true)}finally{$('loginButton').disabled=false}
 });
 $('refresh').addEventListener('click',loadPlayers);
 $('logout').addEventListener('click',async()=>{try{if(accessToken)await api('/auth/v1/logout',{method:'POST'})}catch{}clearSession();notice('Çıkış yapıldı.')});
-(async()=>{try{const stored=JSON.parse(sessionStorage.getItem('obi_admin_session')||'null');if(!stored?.refreshToken)return;const result=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:stored.refreshToken},token:null});accessToken=result.access_token;refreshToken=result.refresh_token;sessionStorage.setItem('obi_admin_session',JSON.stringify({accessToken,refreshToken}));showLoggedIn(true);await loadPlayers()}catch{clearSession()}})();
+(async()=>{try{const stored=JSON.parse(sessionStorage.getItem('obi_admin_session')||'null');if(!stored?.refreshToken)return;const result=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:stored.refreshToken},token:null});accessToken=result.access_token;refreshToken=result.refresh_token;sessionStorage.setItem('obi_admin_session',JSON.stringify({accessToken,refreshToken}));showLoggedIn(true);await Promise.all([loadPlayers(),loadTournaments()])}catch{clearSession()}})();
 </script></body></html>
