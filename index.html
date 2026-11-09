@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080808">
-  <meta name="description" content="ObiTournaments — EA SPORTS FC 27 turnuvalarına katıl, rekabetin parçası ol.">
-  <title>ObiTournaments | EA FC Turnuvaları</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#080808" name="theme-color"/>
+<meta content="ObiTournaments — EA SPORTS FC 27 turnuvalarına katıl, rekabetin parçası ol." name="description"/>
+<title>ObiTournaments | EA FC Turnuvaları</title>
+<style>
     :root{--bg:#080808;--panel:#111;--panel2:#171717;--line:#292929;--white:#f5f5f5;--muted:#a3a3a3;--soft:#d7d7d7}
     *{box-sizing:border-box} html{scroll-behavior:smooth}
     body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
@@ -46,81 +47,151 @@
     .notice{display:none;grid-column:1/-1;padding:12px;border:1px solid #555;border-radius:6px;color:#ddd;font-size:12px}
     @media(max-width:760px){.navlinks{display:none}.hero{padding:78px 0 65px}h1{letter-spacing:-3px}.hero:before{right:-350px;opacity:.35}.section-head{display:block}.section-desc{margin-top:14px}.cards{grid-template-columns:1fr}.register{grid-template-columns:1fr;gap:25px}form{padding:18px}}
     @media(max-width:440px){.wrap{width:min(100% - 28px,1120px)}form{grid-template-columns:1fr}.field.full,.form-submit,.form-hint,.notice{grid-column:1}.hero-actions .btn{width:100%}}
-  </style>
+  
+    .tournament-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .tournament-card{background:linear-gradient(145deg,#151515,#0d0d0d);border:1px solid #303030;border-radius:11px;padding:24px}
+    .tournament-card h3{font-size:21px;margin:15px 0 9px}.tournament-card p{color:#aaa;font-size:13px;margin:8px 0}
+    .tournament-meta{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.tournament-meta span{font-size:11px;color:#bbb;border:1px solid #333;border-radius:5px;padding:5px 9px}
+    .tournament-card .btn{margin-top:12px;cursor:pointer}.catalog-empty{color:#999;background:#111;border:1px solid #292929;border-radius:10px;padding:24px;font-size:13px}
+    .champions-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.champion{background:#121212;border:1px solid #303030;border-radius:10px;padding:22px}.champion strong{display:block;margin:12px 0 3px;font-size:19px}.champion p{font-size:12px;color:#aaa;margin:0}
+    @media(max-width:760px){.tournament-grid,.champions-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header><div class="wrap"><nav>
-  <a class="brand" href="#">OBI<span>TOURNAMENTS</span></a>
-  <div class="navlinks"><a href="#hakkinda">Hakkında</a><a href="#turnuvalar">Turnuvalar</a><a href="#kayit">Kayıt</a></div>
-  <a class="nav-cta" href="#kayit">Turnuvaya Katıl ↗</a>
+<a class="brand" href="#">OBI<span>TOURNAMENTS</span></a>
+<div class="navlinks"><a href="#hakkinda">Hakkında</a><a href="#turnuvalar">Açık Turnuvalar</a><a href="#tamamlanan">Tamamlananlar</a><a href="#sampiyonlar">Şampiyonlar</a><a href="#kayit">Kayıt</a></div>
+<a class="nav-cta" href="#kayit">Turnuvaya Katıl ↗</a>
 </nav></div></header>
-
 <main>
-  <div class="hero"><div class="wrap">
-    <div class="eyebrow"><span class="dot"></span> EA FC COMMUNITY & TOURNAMENTS</div>
-    <h1>Rekabetin<br><span>yeni adresi.</span></h1>
-    <p class="lead">EA SPORTS FC 27 tutkunlarını bir araya getiriyoruz. Turnuvalara katıl, yeteneğini göster ve sahadaki yerini al.</p>
-    <div class="hero-actions"><a class="btn" href="#kayit">Turnuvaya Kayıt Ol ↗</a><a class="btn secondary" href="#turnuvalar">Turnuvaları Keşfet</a></div>
-    <div class="hero-note">Play fair. Compete hard. Enjoy the game.</div>
-  </div></div>
-
-  <section id="hakkinda"><div class="wrap">
-    <div class="section-head"><div><div class="kicker">01 / Hakkımızda</div><h2>Oyun başlasın.</h2></div><p class="section-desc">ObiTournaments, EA FC oyuncuları için düzenlenen çevrim içi turnuvaları tek bir yerde buluşturmayı hedefler.</p></div>
-    <div class="cards">
-      <article class="card"><span class="card-no">01 — COMMUNITY</span><h3>Oyuncular bir arada</h3><p>Farklı seviyelerden oyuncularla rekabet et, yeni rakiplerle tanış.</p></article>
-      <article class="card"><span class="card-no">02 — COMPETITION</span><h3>Gerçek rekabet</h3><p>Turnuva formatında mücadele et ve performansını ortaya koy.</p></article>
-      <article class="card"><span class="card-no">03 — EXPERIENCE</span><h3>Kolay katılım</h3><p>Başvuru bilgilerini gönder; turnuva detayları için iletişime geçelim.</p></article>
-    </div>
-  </div></section>
-
-  <section id="turnuvalar"><div class="wrap">
-    <div class="section-head"><div><div class="kicker">02 / Turnuvalar</div><h2>Takipte kal.</h2></div><p class="section-desc">Yeni turnuvalar ve katılım duyuruları burada paylaşılacak.</p></div>
-    <div class="card" style="min-height:0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
-      <div><span class="tag">ÇOK YAKINDA</span><h3 style="margin:14px 0 5px">İlk EA SPORTS FC 27 turnuvası</h3><p>İlk turnuvamız ücretsiz! Cross-play destekli yeni nesil platformlarda Ultimate Team rekabetine katıl. Tarih ve kontenjan yakında açıklanacak.</p></div>
-      <a class="btn secondary" href="#kayit">İlgi bildir ↗</a>
-    </div>
-  </div></section>
-
-  <section id="kayit"><div class="wrap register">
-    <div class="register-copy"><div class="kicker">03 / Katılım</div><h2>Yerini ayırt.</h2><p>Turnuvaya katılmak için bilgilerini bırak. Organizasyon detayları netleştiğinde seninle iletişime geçelim.</p><p class="small">İlk turnuva ücretsizdir. Başvurular incelendikten sonra Instagram üzerinden iletişime geçilecektir. Ödül bulunmamaktadır.</p></div>
-    <form id="entryForm">
-      <div class="field"><label for="name">Ad soyad *</label><input id="name" name="name" autocomplete="name" required placeholder="Adın ve soyadın"></div>
-      <div class="field"><label for="handle">EA ID *</label><input id="handle" name="handle" required placeholder="EA hesabındaki kullanıcı adın"></div>
-      <div class="field"><label for="platform">Platform *</label><select id="platform" name="platform" required><option value="">Seç</option><option value="PS5">PlayStation 5</option><option value="Xbox Series X/S">Xbox Series X/S</option><option value="PC">PC</option></select></div>
-      <div class="field"><label for="contact">Instagram kullanıcı adın *</label><input id="contact" name="contact" required placeholder="@kullanici"></div>
-      <div class="field full"><label for="discord">Discord kullanıcı adın (isteğe bağlı)</label><input id="discord" name="discord" placeholder="Discord kullanıcı adın"></div>
-      <button class="btn form-submit" type="submit">Ücretsiz Başvuru Gönder ↗</button>
-      <p class="form-hint">* Zorunlu alanlar. Başvurun değerlendirilmek üzere kaydedilir. Kayıt, turnuvaya kesin kabul anlamına gelmez.</p>
-      <div class="notice" id="notice" role="status"></div>
-    </form>
-  </div></section>
-
-  <section><div class="wrap"><div class="contact-row">
-    <div><div class="kicker">Bizi takip et</div><h3 style="margin:7px 0 0">Yeni turnuvaları kaçırma.</h3><p>Duyurular ve güncellemeler için Instagram'da bizi takip et.</p></div>
-    <a class="btn secondary" href="https://www.instagram.com/obitournaments/" target="_blank" rel="noopener">@obitournaments ↗</a>
-  </div></div></section>
+<div class="hero"><div class="wrap">
+<div class="eyebrow"><span class="dot"></span> EA FC COMMUNITY &amp; TOURNAMENTS</div>
+<h1>Rekabetin<br/><span>yeni adresi.</span></h1>
+<p class="lead">EA SPORTS FC 27 tutkunlarını bir araya getiriyoruz. Turnuvalara katıl, yeteneğini göster ve sahadaki yerini al.</p>
+<div class="hero-actions"><a class="btn" href="#kayit">Turnuvaya Kayıt Ol ↗</a><a class="btn secondary" href="#turnuvalar">Turnuvaları Keşfet</a></div>
+<div class="hero-note">Play fair. Compete hard. Enjoy the game.</div>
+</div></div>
+<section id="hakkinda"><div class="wrap">
+<div class="section-head"><div><div class="kicker">01 / Hakkımızda</div><h2>Oyun başlasın.</h2></div><p class="section-desc">ObiTournaments, EA FC oyuncuları için düzenlenen çevrim içi turnuvaları tek bir yerde buluşturmayı hedefler.</p></div>
+<div class="cards">
+<article class="card"><span class="card-no">01 — COMMUNITY</span><h3>Oyuncular bir arada</h3><p>Farklı seviyelerden oyuncularla rekabet et, yeni rakiplerle tanış.</p></article>
+<article class="card"><span class="card-no">02 — COMPETITION</span><h3>Gerçek rekabet</h3><p>Turnuva formatında mücadele et ve performansını ortaya koy.</p></article>
+<article class="card"><span class="card-no">03 — EXPERIENCE</span><h3>Kolay katılım</h3><p>Başvuru bilgilerini gönder; turnuva detayları için iletişime geçelim.</p></article>
+</div>
+</div></section>
+<section id="turnuvalar"><div class="wrap"><div class="section-head"><div><div class="kicker">02 / Aktif turnuvalar</div><h2>Kayıtları açık turnuvalar.</h2></div><p class="section-desc">Katılmak istediğin turnuvayı seç, başvurunu gönder.</p></div><div class="tournament-grid" id="openTournaments"><p class="catalog-empty">Turnuvalar yükleniyor...</p></div></div></section><section id="tamamlanan"><div class="wrap"><div class="section-head"><div><div class="kicker">03 / Turnuva arşivi</div><h2>Tamamlanan turnuvalar.</h2></div><p class="section-desc">Geçmiş organizasyonlar ve turnuva sonuçları.</p></div><div class="tournament-grid" id="completedTournaments"><p class="catalog-empty">Arşiv yükleniyor...</p></div></div></section><section id="sampiyonlar"><div class="wrap"><div class="section-head"><div><div class="kicker">04 / Onur listesi</div><h2>Şampiyonlar.</h2></div><p class="section-desc">Turnuvalarımızda şampiyonluğa ulaşan oyuncular.</p></div><div class="champions-grid" id="championsList"><p class="catalog-empty">Şampiyonlar yükleniyor...</p></div></div></section>
+<section id="kayit"><div class="wrap register">
+<div class="register-copy"><div class="kicker">05 / Katılım</div><h2>Yerini ayırt.</h2><p>Kayıtları açık turnuvalardan birini seç ve başvurunu gönder.</p><p class="small">Başvurular incelendikten sonra Instagram üzerinden iletişime geçilecektir. Her turnuvanın ödülü ve koşulları kendi kartında belirtilir.</p></div>
+<form id="entryForm">
+<div class="field full"><label for="tournamentChoice">Başvurulacak turnuva *</label><select disabled="" id="tournamentChoice" name="tournament" required=""><option value="">Turnuvalar yükleniyor...</option></select></div><div class="field"><label for="name">Ad soyad *</label><input autocomplete="name" id="name" name="name" placeholder="Adın ve soyadın" required=""/></div>
+<div class="field"><label for="handle">EA ID *</label><input id="handle" name="handle" placeholder="EA hesabındaki kullanıcı adın" required=""/></div>
+<div class="field"><label for="platform">Platform *</label><select id="platform" name="platform" required=""><option value="">Seç</option><option value="PS5">PlayStation 5</option><option value="Xbox Series X/S">Xbox Series X/S</option><option value="PC">PC</option></select></div>
+<div class="field"><label for="contact">Instagram kullanıcı adın *</label><input id="contact" name="contact" placeholder="@kullanici" required=""/></div>
+<div class="field full"><label for="discord">Discord kullanıcı adın (isteğe bağlı)</label><input id="discord" name="discord" placeholder="Discord kullanıcı adın"/></div>
+<button class="btn form-submit" type="submit">Ücretsiz Başvuru Gönder ↗</button>
+<p class="form-hint">* Zorunlu alanlar. Başvurun değerlendirilmek üzere kaydedilir. Kayıt, turnuvaya kesin kabul anlamına gelmez.</p>
+<div class="notice" id="notice" role="status"></div>
+</form>
+</div></section>
+<section><div class="wrap"><div class="contact-row">
+<div><div class="kicker">Bizi takip et</div><h3 style="margin:7px 0 0">Yeni turnuvaları kaçırma.</h3><p>Duyurular ve güncellemeler için Instagram'da bizi takip et.</p></div>
+<a class="btn secondary" href="https://www.instagram.com/obitournaments/" rel="noopener" target="_blank">@obitournaments ↗</a>
+</div></div></section>
 </main>
 <footer><div class="wrap foot"><span>© 2026 ObiTournaments. Tüm hakları saklıdır.</span><span>EA SPORTS FC 27 Community • Türkiye</span></div></footer>
 <script>
-  // Supabase > Settings > API Keys > sb_publishable_fVCqF6TXN0ymvAlsFIIgfw_RzuJaYq_.
   const SUPABASE_URL = 'https://eizmdhhhwucbjnhouymq.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fVCqF6TXN0ymvAlsFIIgfw_RzuJaYq_';
   const form = document.getElementById('entryForm');
   const notice = document.getElementById('notice');
   const submitButton = form.querySelector('button[type="submit"]');
+  const choice = document.getElementById('tournamentChoice');
+  let openTournamentNames = new Set();
+  function element(tag, className, content) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (content !== undefined) node.textContent = content;
+    return node;
+  }
+  function empty(container, message) {
+    container.replaceChildren(element('p', 'catalog-empty', message));
+  }
+  function fmtDate(date) {
+    if (!date) return 'Tarih duyurulacak';
+    const d = new Date(date);
+    return Number.isNaN(d.getTime()) ? 'Tarih duyurulacak' : d.toLocaleDateString('tr-TR', {day:'numeric',month:'long',year:'numeric'});
+  }
+  function tournamentCard(t, open) {
+    const card = element('article','tournament-card');
+    card.append(element('span','tag',open ? 'KAYIT AÇIK' : 'TAMAMLANDI'));
+    card.append(element('h3','',t.name));
+    if (t.description) card.append(element('p','',t.description));
+    const meta = element('div','tournament-meta');
+    [fmtDate(t.start_date), (t.max_players || '—') + ' kişilik kontenjan'].forEach(v=>meta.append(element('span','',v)));
+    card.append(meta);
+    card.append(element('p','', 'Ödül: ' + (t.prize || 'Belirtilmedi')));
+    if (!open && t.winner_name) card.append(element('p','', 'Şampiyon: ' + t.winner_name));
+    if (open) {
+      const a = element('a','btn','Bu turnuvaya başvur ↗');
+      a.href = '#kayit';
+      a.addEventListener('click',()=>{choice.value=t.name;});
+      card.append(a);
+    }
+    return card;
+  }
+  async function loadTournaments() {
+    const openBox = document.getElementById('openTournaments');
+    const completedBox = document.getElementById('completedTournaments');
+    const championsBox = document.getElementById('championsList');
+    choice.disabled = true;
+    try {
+      const params = new URLSearchParams({select:'name,description,start_date,max_players,prize,status,winner_name',status:'in.(registration_open,completed)',order:'created_at.desc'});
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/tournaments?${params}`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const tournaments = await response.json();
+      const opened = tournaments.filter(t=>t.status==='registration_open');
+      const completed = tournaments.filter(t=>t.status==='completed');
+      openTournamentNames = new Set(opened.map(t=>t.name));
+      openBox.replaceChildren(...opened.map(t=>tournamentCard(t,true)));
+      completedBox.replaceChildren(...completed.map(t=>tournamentCard(t,false)));
+      if (!opened.length) empty(openBox,'Şu anda kayıtları açık turnuva bulunmuyor.');
+      if (!completed.length) empty(completedBox,'Henüz tamamlanan turnuva bulunmuyor.');
+      choice.replaceChildren(new Option(opened.length ? 'Turnuva seç' : 'Kayıtları açık turnuva yok',''));
+      for (const t of opened) choice.add(new Option(t.name,t.name));
+      choice.disabled = !opened.length;
+      const winners = completed.filter(t=>t.winner_name && t.winner_name.trim());
+      championsBox.replaceChildren(...winners.map(t=>{
+        const card=element('article','champion');
+        card.append(element('span','tag','ŞAMPİYON 🏆'));
+        card.append(element('strong','',t.winner_name));
+        card.append(element('p','',t.name));
+        return card;
+      }));
+      if (!winners.length) empty(championsBox,'Henüz açıklanmış bir şampiyon bulunmuyor.');
+    } catch (err) {
+      console.error('Turnuva listesi yüklenemedi:',err);
+      empty(openBox,'Turnuvalar yüklenemedi. Lütfen daha sonra tekrar dene.');
+      empty(completedBox,'Turnuva arşivi yüklenemedi.');
+      empty(championsBox,'Şampiyonlar yüklenemedi.');
+      choice.replaceChildren(new Option('Turnuvalar yüklenemedi',''));
+    }
+  }
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;
-    notice.style.display = 'block';
     const data = new FormData(form);
-    const instagram = String(data.get('contact') || '').trim();
+    const tournament = String(data.get('tournament') || '');
+    if (!openTournamentNames.has(tournament)) {
+      notice.style.display='block';notice.textContent='Lütfen kayıtları açık bir turnuva seç.';return;
+    }
+    notice.style.display = 'block';
     const payload = {
       player_name: String(data.get('name') || '').trim(),
       ea_id: String(data.get('handle') || '').trim(),
       platform: String(data.get('platform') || ''),
-      instagram,
+      instagram: String(data.get('contact') || '').trim(),
       discord: String(data.get('discord') || '').trim() || null,
-      tournament: 'OBI CUP #001',
+      tournament,
       status: 'pending'
     };
     submitButton.disabled = true;
@@ -129,24 +200,22 @@
     try {
       const response = await fetch(`${SUPABASE_URL}/rest/v1/players`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_PUBLISHABLE_KEY,
-          'Prefer': 'return=minimal'
-        },
+        headers: {'Content-Type':'application/json',apikey:SUPABASE_PUBLISHABLE_KEY,Prefer:'return=minimal'},
         body: JSON.stringify(payload)
       });
-      if (!response.ok) { const detail = await response.text(); throw new Error(`Kayıt hatası: ${response.status} ${detail}`); }
+      if (!response.ok) throw new Error('Kayıt hatası: ' + response.status);
       notice.textContent = 'Başvurun alındı! Turnuva duyuruları için @obitournaments hesabını takip et.';
       form.reset();
     } catch (error) {
-      notice.textContent = 'Başvuru gönderilemedi. Hata: ' + error.message;
+      notice.textContent = 'Başvuru gönderilemedi. Lütfen daha sonra tekrar dene.';
       console.error('ObiTournaments kayıt hatası:', error);
     } finally {
       submitButton.disabled = false;
       submitButton.textContent = 'Ücretsiz Başvuru Gönder ↗';
     }
   });
+  loadTournaments();
 </script>
 </body>
 </html>
+
