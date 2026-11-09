@@ -148,7 +148,7 @@
     const championsBox = document.getElementById('championsList');
     choice.disabled = true;
     try {
-      const params = new URLSearchParams({select:'name,description,start_date,max_players,prize,status,winner_name',status:'in.(registration_open,completed)',order:'created_at.desc'});
+      const params = new URLSearchParams({select:'id,name,description,start_date,max_players,prize,status,winner_name',status:'in.(registration_open,completed)',order:'created_at.desc'});
       const response = await fetch(`${SUPABASE_URL}/rest/v1/tournaments?${params}`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const tournaments = await response.json();
