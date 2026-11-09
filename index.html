@@ -154,7 +154,7 @@
       const tournaments = await response.json();
       const opened = tournaments.filter(t=>t.status==='registration_open');
       const completed = tournaments.filter(t=>t.status==='completed');
-      openTournamentNames = new Set(opened.map(t=>t.name));
+      openTournamentIds = new Map(opened.map(t => [t.name, t.id]));
       openBox.replaceChildren(...opened.map(t=>tournamentCard(t,true)));
       completedBox.replaceChildren(...completed.map(t=>tournamentCard(t,false)));
       if (!opened.length) empty(openBox,'Şu anda kayıtları açık turnuva bulunmuyor.');
@@ -194,8 +194,9 @@
       platform: String(data.get('platform') || ''),
       instagram: String(data.get('contact') || '').trim(),
       discord: String(data.get('discord') || '').trim() || null,
-      tournament,
-      status: 'pending'
+tournament,
+tournament_id: openTournamentIds.get(tournament),
+status: 'pending'
     };
     submitButton.disabled = true;
     submitButton.textContent = 'Gönderiliyor...';
