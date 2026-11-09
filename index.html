@@ -127,7 +127,7 @@
     const card = element('article','tournament-card');
     card.append(element('span','tag',open ? 'KAYIT AÇIK' : 'TAMAMLANDI'));
     card.append(element('h3','',t.name));
-    if (t.description) card.append(element('p','',t.description));
+    if (t.description) card.append(element('p','tournament-description',t.description));
     const meta = element('div','tournament-meta');
     [fmtDate(t.start_date), (t.max_players || '—') + ' kişilik kontenjan'].forEach(v=>meta.append(element('span','',v)));
     card.append(meta);
