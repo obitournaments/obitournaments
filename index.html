@@ -109,6 +109,7 @@
   const submitButton = form.querySelector('button[type="submit"]');
   const choice = document.getElementById('tournamentChoice');
   let openTournamentNames = new Set();
+  let openTournamentIds = new Map();
   function element(tag, className, content) {
     const node = document.createElement(tag);
     if (className) node.className = className;
