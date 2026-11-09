@@ -74,9 +74,12 @@ const filteredPlayers = selectedTournament
    }actions.append(buttons);tr.append(actions);$('rows').append(tr);
   }
   notice('Başvurular güncellendi.');
- }catch(e){notice(e.message,true);if(/401|JWT|token/i.test(e.message))clearSession()}finally{$('refresh').disabled=false}
+}catch(e){
+  notice(e.message,true);
+  if(/401|JWT|token/i.test(e.message)) clearSession();
+}finally{
+  $('refresh').disabled=false;
 }
-
 const statusLabels={draft:'Taslak',registration_open:'Kayıt açık',registration_closed:'Kayıt kapalı',ongoing:'Devam ediyor',completed:'Tamamlandı',cancelled:'İptal edildi'};
 function resetTournamentForm(){editingTournamentId=null;$('tournamentForm').reset();$('tournamentMax').value='32';$('tournamentFormTitle').textContent='Yeni turnuva oluştur';$('saveTournament').textContent='Turnuvayı kaydet';$('cancelEdit').classList.add('hidden')}
 function setTournamentEdit(t){editingTournamentId=t.id;$('tournamentName').value=t.name||'';$('tournamentMax').value=t.max_players;$('tournamentPrize').value=t.prize||'';$('tournamentDescription').value=t.description||'';$('tournamentStatus').value=t.status;$('tournamentDate').value=t.start_date?new Date(new Date(t.start_date).getTime()-new Date(t.start_date).getTimezoneOffset()*60000).toISOString().slice(0,16):'';$('tournamentFormTitle').textContent='Turnuvayı düzenle';$('saveTournament').textContent='Değişiklikleri kaydet';$('cancelEdit').classList.remove('hidden');$('tournamentForm').scrollIntoView({behavior:'smooth',block:'center'})}
