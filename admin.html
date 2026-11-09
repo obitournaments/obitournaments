@@ -39,9 +39,12 @@ const players=await api('/rest/v1/players?select=*&order=created_at.desc&limit=5
 const filter = $('playerTournamentFilter');
 const previousSelection = filter.value;
 
-const tournamentNames = [...new Set(
-  players.map(p => p.tournament).filter(Boolean)
-)];
+const tournaments = await api('/rest/v1/tournaments?select=name&order=created_at.desc');
+
+const tournamentNames = [...new Set([
+  ...tournaments.map(t => t.name),
+  ...players.map(p => p.tournament)
+].filter(Boolean))];
 
 filter.replaceChildren(new Option('Tüm Turnuvalar', ''));
 
