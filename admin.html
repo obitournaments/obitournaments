@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>ObiTournaments | Yönetici</title>
+<style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#080808;color:#f5f5f5;font:15px system-ui,Arial,sans-serif}main{max-width:1050px;margin:50px auto;padding:0 20px}h1{font-size:30px;letter-spacing:-1px}h2{font-size:20px}p,.muted{color:#aaa}.panel{background:#151515;border:1px solid #303030;border-radius:14px;padding:24px;margin-top:22px}input,button{font:inherit;border-radius:8px;padding:12px}input{display:block;width:100%;background:#090909;color:#fff;border:1px solid #444;margin:10px 0 15px}button{background:#f5f5f5;color:#111;border:0;font-weight:650;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.secondary{background:#292929;color:#eee}.actions{display:flex;gap:8px;flex-wrap:wrap}.top{display:flex;align-items:center;justify-content:space-between;gap:16px}.hidden{display:none!important}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:850px}th,td{padding:13px 10px;text-align:left;border-bottom:1px solid #303030;vertical-align:middle}th{color:#aaa;font-size:12px}td{font-size:13px}.status{display:inline-block;border:1px solid #555;padding:5px 9px;border-radius:20px}.notice{min-height:22px;margin-top:12px}.danger{color:#ff9a9a}.ok{color:#a6e3b4}small{color:#999}a{color:#ddd}</style></head>
+<body><main><div class="top"><div><small>OBITOURNAMENTS / MANAGEMENT</small><h1>Yönetici Paneli</h1></div><button id="logout" class="secondary hidden">Çıkış yap</button></div>
+<section id="loginPanel" class="panel"><h2>Yönetici girişi</h2><p>Yalnızca yetkili hesaplar başvuruları görüntüleyebilir.</p><form id="loginForm"><label>E-posta<input id="email" type="email" autocomplete="username" required></label><label>Şifre<input id="password" type="password" autocomplete="current-password" required></label><button id="loginButton" type="submit">Giriş yap</button></form></section>
+<section id="dashboard" class="hidden"><div class="panel"><div class="top"><div><h2>Oyuncu başvuruları</h2><p id="summary">Yükleniyor...</p></div><button id="refresh" class="secondary">Yenile</button></div><div class="tablewrap"><table><thead><tr><th>Oyuncu</th><th>EA ID</th><th>Platform</th><th>Instagram</th><th>Discord</th><th>Turnuva</th><th>Durum</th><th>İşlemler</th></tr></thead><tbody id="rows"></tbody></table></div></div></section><p id="notice" class="notice" role="status" aria-live="polite"></p></main>
+<script>
+'use strict';
+const SUPABASE_URL='https://eizmdhhhwucbjnhouymq.supabase.co';
+// Bu değer herkese açık publishable anahtardır; secret/service_role anahtarı eklemeyin.
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_fVCqF6TXN0ymvAIsFIgfw_RzuJaYq_';
+const $=id=>document.getElementById(id);
+let accessToken=null;
+let refreshToken=null;
+const notice=(message,error=false)=>{$('notice').textContent=message;$('notice').className='notice '+(error?'danger':'ok')};
+async function api(path,{method='GET',body,token=accessToken}={}){
+ const headers={'apikey':SUPABASE_PUBLISHABLE_KEY};
+ if(body!==undefined)headers['Content-Type']='application/json';
+ if(token)headers.Authorization='Bearer '+token;
+ const response=await fetch(SUPABASE_URL+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body)});
+ const raw=await response.text();let data;try{data=raw?JSON.parse(raw):null}catch{data=raw}
+ if(!response.ok)throw Error(data?.msg||data?.error_description||data?.message||data?.error||'İstek başarısız ('+response.status+')');
+ return data;
+}
+function showLoggedIn(yes){$('loginPanel').classList.toggle('hidden',yes);$('dashboard').classList.toggle('hidden',!yes);$('logout').classList.toggle('hidden',!yes)}
+function clearSession(){accessToken=null;refreshToken=null;sessionStorage.removeItem('obi_admin_session');showLoggedIn(false);$('rows').replaceChildren()}
+async function loadPlayers(){
+ $('refresh').disabled=true;notice('Başvurular yükleniyor...');
+ try{
+  const players=await api('/rest/v1/players?select=*&order=created_at.desc&limit=500');
+  $('summary').textContent=players.length+' kayıt (en fazla 500 gösteriliyor)';
+  $('rows').replaceChildren();
+  if(!players.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=8;td.textContent='Başvuru bulunamadı veya bu hesaba erişim yetkisi verilmedi.';tr.append(td);$('rows').append(tr)}
+  for(const player of players){
+   const tr=document.createElement('tr');
+   for(const key of ['player_name','ea_id','platform','instagram','discord','tournament']){const td=document.createElement('td');td.textContent=player[key]??'—';tr.append(td)}
+   const status=document.createElement('td'),pill=document.createElement('span');pill.className='status';pill.textContent=player.status||'pending';status.append(pill);tr.append(status);
+   const actions=document.createElement('td'),buttons=document.createElement('div');buttons.className='actions';
+   for(const [label,value] of [['Onayla','approved'],['Reddet','rejected']]){
+    const button=document.createElement('button');button.className=value==='rejected'?'secondary':'';button.textContent=label;button.disabled=player.status===value;
+    button.addEventListener('click',async()=>{if(!confirm((player.player_name||'Oyuncu')+' için durum '+value+' olarak değiştirilsin mi?'))return;button.disabled=true;try{await api('/rest/v1/players?id=eq.'+encodeURIComponent(player.id),{method:'PATCH',body:{status:value}});await loadPlayers();notice('Başvuru durumu güncellendi.')}catch(e){notice(e.message,true);button.disabled=false}});
+    buttons.append(button);
+   }actions.append(buttons);tr.append(actions);$('rows').append(tr);
+  }
+  notice('Başvurular güncellendi.');
+ }catch(e){notice(e.message,true);if(/401|JWT|token/i.test(e.message))clearSession()}finally{$('refresh').disabled=false}
+}
+$('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();$('loginButton').disabled=true;notice('Giriş yapılıyor...');
+ try{
+  const result=await api('/auth/v1/token?grant_type=password',{method:'POST',body:{email:$('email').value.trim(),password:$('password').value},token:null});
+  accessToken=result.access_token;refreshToken=result.refresh_token;
+  // Yönetici kontrolü veritabanındaki RLS politikaları tarafından yapılır.
+  sessionStorage.setItem('obi_admin_session',JSON.stringify({accessToken,refreshToken}));
+  $('password').value='';showLoggedIn(true);await loadPlayers();
+ }catch(err){clearSession();notice('Giriş başarısız: '+err.message,true)}finally{$('loginButton').disabled=false}
+});
+$('refresh').addEventListener('click',loadPlayers);
+$('logout').addEventListener('click',async()=>{try{if(accessToken)await api('/auth/v1/logout',{method:'POST'})}catch{}clearSession();notice('Çıkış yapıldı.')});
+(async()=>{try{const stored=JSON.parse(sessionStorage.getItem('obi_admin_session')||'null');if(!stored?.refreshToken)return;const result=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:stored.refreshToken},token:null});accessToken=result.access_token;refreshToken=result.refresh_token;sessionStorage.setItem('obi_admin_session',JSON.stringify({accessToken,refreshToken}));showLoggedIn(true);await loadPlayers()}catch{clearSession()}})();
+</script></body></html>
